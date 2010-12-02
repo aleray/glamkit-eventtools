@@ -9,6 +9,7 @@ from occurrences import *
 from utils import occurrences_to_events
 from eventtools.deprecated import deprecated
 from dynamicmodel import create_model_for_module
+from eventtools.periods import Period
 
 from django.core.exceptions import ValidationError
 
@@ -40,9 +41,10 @@ class EventQuerySetBase(models.query.QuerySet):
         """
         returns the EventOccurrences in a given date(datetime) range.
         """
-        occurrences = []
-        for item in self:
-            occurrences += item.occurrences_between(start, end, hide_hidden)
+        if hide_hidden:
+            return Period(self, start, end).get_occurrences()
+        else:
+            return Period(self, start, end).get_even_hidden_occurrences()
             
         return sorted(occurrences)
 
