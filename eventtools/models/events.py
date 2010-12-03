@@ -248,6 +248,12 @@ class EventBase(models.Model):
                 lastdays.append(generator.end)
             for varied in generator.get_changed_occurrences():
                 lastdays.append(varied.varied_end)
+
+        # coerce dates into datetimes (so that sort will work)
+        for i, day in enumerate(lastdays):
+            if isinstance(day, datetime.date):
+                lastdays[i] = datetime.datetime.combine(day, datetime.time(0,0))
+                
         lastdays.sort()
         try:
             return lastdays[-1]
