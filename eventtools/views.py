@@ -23,8 +23,9 @@ class EventViews(object):
     It will get filtered to .in_listings() where appropriate.
     """
 
-    def __init__(self, event_qs, occurrence_qs=None):
+    def __init__(self, event_qs, occurrence_qs=None, template_dir="eventtools/"):
         self.event_qs = event_qs
+        self.template_dir = template_dir
 
         if occurrence_qs is None:
             occurrence_qs = self.event_qs.occurrences()
@@ -56,7 +57,7 @@ class EventViews(object):
         context = RequestContext(request)
         context['event'] = event
 
-        return render_to_response('eventtools/event.html', context)
+        return render_to_response('%sevent.html' % self.template_dir, context)
 
     def occurrence(self, request, event_slug, occurrence_pk):
         """
@@ -72,7 +73,7 @@ class EventViews(object):
         context['occurrence'] = occurrence
         context['event'] = event
 
-        return render_to_response('eventtools/event.html', context)
+        return render_to_response('%sevent.html' % self.template_dir, context)
 
 
     # def event_ical(self, request, event_slug):
@@ -101,7 +102,7 @@ class EventViews(object):
         
     
     def occurrence_list(self, request): #probably want to override this for doing more filtering.
-        template = 'eventtools/occurrence_list.html'
+        template = '%soccurrence_list.html' % self.template_dir
         context = RequestContext(request)
         context.update(self._occurrence_list_context(request, self.occurrence_qs))        
         return render_to_response(template, context)
@@ -112,7 +113,7 @@ class EventViews(object):
     #     return response_as_ical(request, pool)
 
     def on_date(self, request, year, month, day):
-        template = 'eventtools/occurrence_list.html'
+        template = '%soccurrence_list.html' % self.template_dir
         day = datetime.date(int(year), int(month), int(day))
         event_pool = self.occurrence_qs.starts_on(day)
 
