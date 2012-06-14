@@ -364,7 +364,7 @@ def EventAdmin(EventModel, SuperModel=MPTTModelAdmin, show_exclusions=False, sho
                 'occurrence_edit_url': self.occurrence_edit_url(event=obj),
             }
             extra_context.update(extra_extra_context)
-            return super(_EventAdmin, self).change_view(request, object_id, extra_context)
+            return super(_EventAdmin, self).change_view(request, object_id, extra_context=extra_context)
     return _EventAdmin
 
 try:
