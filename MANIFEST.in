@@ -1,2 +1,3 @@
 recursive-include eventtools/templates *
 recursive-include eventtools/locale *
+recursive-include eventtools/static *
