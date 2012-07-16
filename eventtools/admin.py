@@ -228,11 +228,11 @@ def EventForm(EventModel):
             model = EventModel
     return _EventForm
 
-def EventAdmin(EventModel, SuperModel=MPTTModelAdmin, show_exclusions=False, show_generator=True):
+def EventAdmin(EventModel, SuperModel=MPTTModelAdmin, show_exclusions=False, show_generator=True, **kwargs):
     """ pass in the name of your EventModel subclass to use this admin. """
-    
+
     class _EventAdmin(SuperModel):
-        form = EventForm(EventModel)
+        form = kwargs['form'] if 'form' in kwargs else EventForm(EventModel)
         list_display = ['unicode_bold_if_listed', 'occurrence_link', 'season', 'status'] # leave as list to allow extension
         change_form_template = 'admin/eventtools/event.html'
         save_on_top = True
